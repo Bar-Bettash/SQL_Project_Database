@@ -13,6 +13,10 @@
 ## Overview
 The "hookah_tobacco_db" project involves designing and implementing a relational database to streamline the operations of a hookah tobacco store. This comprehensive database system efficiently manages critical aspects of the store, including product information, customer data, orders, and employee details.
 
+## Entity Relationship Diagram:
+![image](https://github.com/user-attachments/assets/2750698b-a894-4797-8095-ae71dbff3be6)
+
+
 ## Database Structure
 The database consists of interconnected tables, each serving a specific function:
 
@@ -73,13 +77,123 @@ The database encompasses various relationships to ensure data integrity and effi
   - Employees table where each employee can have a manager who is also an employee.
 
 ## Enhancements and Features
+
+### Constraints:
+----------------------------------------------------------------
+### Brand Table
+- **Primary Key:** `BrandID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `Brand_Name` (NOT NULL)
+  - `Country` (NOT NULL)
+
+### Flavor Table
+- **Primary Key:** `FlavorID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `Flavor_Name` (NOT NULL)
+
+### LeafType Table
+- **Primary Key:** `LeafTypeID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `Leaf_Name` (NOT NULL)
+  - `Leaf_Strength` (NOT NULL)
+
+### PackSize Table
+- **Primary Key:** `PackSizeID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `Grams` (NOT NULL)
+
+### Product Table
+- **Primary Key:** `ProductID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `BrandID` (NOT NULL)
+  - `FlavorID` (NOT NULL)
+  - `LeafTypeID` (NOT NULL)
+  - `PackSizeID` (NOT NULL)
+  - `Price` (NOT NULL)
+  - `Manufacturing_Date` (NOT NULL)
+  - `Expiry_Date` (NOT NULL)
+- **Foreign Keys:**
+  - `BrandID` references `Brand(BrandID)`
+  - `FlavorID` references `Flavor(FlavorID)`
+  - `LeafTypeID` references `LeafType(LeafTypeID)`
+  - `PackSizeID` references `PackSize(PackSizeID)`
+
+### Customer Table
+- **Primary Key:** `CustomerID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `FirstName` (NOT NULL)
+  - `LastName` (NOT NULL)
+  - `Email` (NOT NULL)
+  - `Phone` (NOT NULL)
+  - `Address` (NOT NULL)
+
+### Order Table
+- **Primary Key:** `OrderID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `CustomerID` (NOT NULL)
+  - `Order_Date` (NOT NULL)
+  - `Total_Amount` (NOT NULL)
+- **Foreign Keys:**
+  - `CustomerID` references `Customer(CustomerID)`
+
+### OrderDetails Table
+- **Primary Key:** `OrderDetailID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `OrderID` (UNIQUE, NOT NULL)
+  - `ProductID` (NOT NULL)
+  - `Quantity` (NOT NULL)
+- **Foreign Keys:**
+  - `OrderID` references `Order(OrderID)`
+  - `ProductID` references `Product(ProductID)`
+
+### Brand_Flavor_Relationship Table
+- **Primary Key:** `RelationshipID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `BrandID` (NOT NULL)
+  - `FlavorID` (NOT NULL)
+- **Foreign Keys:**
+  - `BrandID` references `Brand(BrandID)`
+  - `FlavorID` references `Flavor(FlavorID)`
+
+### Brand_PackSize_Relationship Table
+- **Primary Key:** `RelationshipID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `BrandID` (NOT NULL)
+  - `PackSizeID` (NOT NULL)
+- **Foreign Keys:**
+  - `BrandID` references `Brand(BrandID)`
+  - `PackSizeID` references `PackSize(PackSizeID)`
+
+### Employees Table
+- **Primary Key:** `EmployeeID` (AUTO_INCREMENT)
+- **Constraints:**
+  - `FirstName` (NOT NULL)
+  - `LastName` (NOT NULL)
+  - `ManagerID` (NOT NULL)
+- **Foreign Keys:**
+  - `ManagerID` references `Employees(EmployeeID)`
+
+----------------------------------------------------------------
+
 ### Views:
 - **vw_ProductInfo**: Displays product information including brand and flavor names.
 - **vw_CustomerOrderTotal**: Shows total order amounts for each customer.
 - **vw_FlavorTotalQuantity**: Provides insights into the total quantity of each flavor sold.
 
+----------------------------------------------------------------
+
 ### Triggers:
 Ensure data consistency and automate specific calculations, enhancing the database's functionality and reliability.
+- **Customer_before_insert_uppercase_names (Before):** AutomaFcally converts first names and last names to uppercase before inserFng new records into the Customer table.
+- **Customer_before_insert_same_names (Before):** Prevents inserFng records where the first name is the same as the last name in the Customer table.
+- **Order_before_insert_total_price (Before):** Calculates and sets the total amount for an order before inserFng new records into the Order table, considering the price and quanFty of products in the order.
+- **Product_before_insert_date_check (Before):** Ensures that the manufacturing date is before the expiry date for each product before inserFng new records into the Product table.
+- **OrderDetails_ajer_insert_update_stock (After):** Updates the stock quanFty of a product ajer inserFng new records into the OrderDetails table, considering the quanFty sold in the order.
+- **OrderDetails_ajer_insert_update_total_amount (After):** Updates the total amount of an order ajer inserFng new records into the OrderDetails table, considering the total price of products in the order.
+- **Order_ajer_insert_audit (After):** Creates an audit trail of inserted orders, recording the order ID, user who inserted the order, and the Fmestamp.
+- **Customer_ajer_insert_audit (After):** Creates an audit trail of inserted customers, recording the customer ID, user who inserted the customer, and the Fmestamp.
+
+----------------------------------------------------------------
 
 ## Benefits
 Implementing this database system enables the hookah tobacco store to:
