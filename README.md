@@ -1,5 +1,5 @@
 
-<h1 align="center">SQL Project Database<p align="center">
+<h1 align="center">SQL Relational Database Design and Data Modeling Project for a Retail Inventory and Sales System<p align="center">
 <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a>
 </h1>
 
