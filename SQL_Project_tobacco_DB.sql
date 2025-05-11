@@ -79,7 +79,7 @@ CREATE TABLE `Order` (
 -- Create the OrderDetails table
 CREATE TABLE OrderDetails (
     OrderDetailID INT AUTO_INCREMENT PRIMARY KEY,
-    OrderID INT UNIQUE,
+    OrderID INT,
     ProductID INT NOT NULL,
     Quantity INT NOT NULL,
     FOREIGN KEY (OrderID) REFERENCES `Order` (OrderID),
